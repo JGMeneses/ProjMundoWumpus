@@ -37,13 +37,15 @@ public class BaseDeConhecimento {
                 posicao[1] = 0;
             }
         } else if ((i == 0) && (j == 1)) { // Sala (0,1)
-            if (!brisa) { // B[1,1] dupla (P[1,2] ou P[2,1]); se um é falso, o outro é falso
+            // Verifica se há brisa e define o estado das casas adjacentes
+            if (!brisa) {
                 mundo[1][1] = 1; // Seguro
                 mundo[0][2] = 1; // Seguro
             } else {
                 mundo[1][1] = -1; // Não seguro
                 mundo[0][2] = -1; // Não seguro
             }
+            // Verifica se há fedor e define o estado das casas adjacentes
             if (!fedor) {
                 mundo[1][1] = 1; // Seguro
                 mundo[0][2] = 1; // Seguro
@@ -52,6 +54,7 @@ public class BaseDeConhecimento {
                 mundo[0][2] = -1; // Não seguro
             }
 
+            // Define a próxima posição com base no estado das casas adjacentes
             if (mundo[1][1] == 1) {
                 posicao[0] = 1;
                 posicao[1] = 1;
@@ -64,8 +67,8 @@ public class BaseDeConhecimento {
                     posicao[1] = 0;
                 }
             }
-
         } else if ((i == 1) && (j == 0)) {
+            // Verifica se há brisa e define o estado das casas adjacentes
             if (!brisa) {
                 mundo[1][1] = 1; // Seguro
                 mundo[2][0] = 1; // Seguro
@@ -73,6 +76,7 @@ public class BaseDeConhecimento {
                 mundo[1][1] = -1; // Não seguro
                 mundo[2][0] = -1; // Não seguro
             }
+            // Verifica se há fedor e define o estado das casas adjacentes
             if (!fedor) {
                 mundo[1][1] = 1; // Seguro
                 mundo[2][0] = 1; // Seguro
@@ -81,6 +85,7 @@ public class BaseDeConhecimento {
                 mundo[2][0] = -1; // Não seguro
             }
 
+            // Define a próxima posição com base no estado das casas adjacentes
             if (mundo[1][1] == 1) {
                 posicao[0] = 1;
                 posicao[1] = 1;
@@ -88,42 +93,47 @@ public class BaseDeConhecimento {
                 if (mundo[2][0] == 1) {
                     posicao[0] = 2;
                     posicao[1] = 0;
+                } else {
+                    // Verifica se as casas adjacentes a (1,1) foram visitadas e continuam sendo não seguras (-1).
+                    // Se for o caso, a casa (1,1) é marcada como segura, pois não pode haver um poço e um Wumpus no mesmo local.
+                    if (caminho[0][1] == true && caminho[1][0] == true && mundo[1][1] == -1) {
+                        mundo[1][1] = 1; // Seguro
 
-                    // Aqui ele verifica se ele já visitou os dois lugares onde (1,1) é adjacente
-                    // e verifica se eles continuam sendo -1. Se for o caso, significa que há tanto uma brisa quanto um fedor nessas casas adjacentes,
-                    // o que implica que aquele local é seguro, pois não pode haver poço e Wumpus no mesmo canto.
-                } else if (caminho[0][1] == true && caminho[1][0] == true && mundo[1][1] == -1) {
-                    mundo[1][1] = 1; // Seguro, pois não pode haver um poço e um Wumpus no mesmo local
+                        // Verifica se há brisa e define o estado das casas adjacentes
+                        if (!brisa) {
+                            mundo[1][2] = 1; // Seguro
+                            mundo[2][1] = 1; // Seguro
+                        } else {
+                            mundo[1][2] = -1; // Não seguro
+                            mundo[2][1] = -1; // Não seguro
+                        }
+                        // Verifica se há fedor e define o estado das casas adjacentes
+                        if (!fedor) {
+                            mundo[1][2] = 1; // Seguro
+                            mundo[2][1] = 1; // Seguro
+                        } else {
+                            mundo[1][2] = -1; // Não seguro
+                            mundo[2][1] = -1; // Não seguro
+                        }
 
-                    if (!brisa) {
-                        mundo[1][2] = 1; // Seguro
-                        mundo[2][1] = 1; // Seguro
-                    } else {
-                        mundo[1][2] = -1; // Não seguro
-                        mundo[2][1] = -1; // Não seguro
-                    }
-                    if (!fedor) {
-                        mundo[1][2] = 1; // Seguro
-                        mundo[2][1] = 1; // Seguro
-                    } else {
-                        mundo[1][2] = -1; // Não seguro
-                        mundo[2][1] = -1; // Não seguro
-                    }
-                    if (mundo[1][2] == 1) {
-                        posicao[0] = 1;
-                        posicao[1] = 2;
-                    } else {
-                        if (mundo[2][1] == 1) {
-                            posicao[0] = 2;
-                            posicao[1] = 1;
-                        } else { // Retorne à posição (1,1)
+                        // Define a próxima posição com base no estado das casas adjacentes
+                        if (mundo[1][2] == 1) {
                             posicao[0] = 1;
-                            posicao[1] = 1;
+                            posicao[1] = 2;
+                        } else {
+                            if (mundo[2][1] == 1) {
+                                posicao[0] = 2;
+                                posicao[1] = 1;
+                            } else { // Retorne à posição (1,1)
+                                posicao[0] = 1;
+                                posicao[1] = 1;
+                            }
                         }
                     }
                 }
             }
-        }else if ((i == 1) && (j == 2)) {
+        } else if ((i == 1) && (j == 2)) {
+            // Verifica se há brisa e define o estado das casas adjacentes
             if (!brisa) {
                 mundo[2][2] = 1; // Seguro
                 mundo[1][3] = 1; // Seguro
@@ -131,6 +141,7 @@ public class BaseDeConhecimento {
                 mundo[2][2] = -1; // Não seguro
                 mundo[1][3] = -1; // Não seguro
             }
+            // Verifica se há fedor e define o estado das casas adjacentes
             if (!fedor) {
                 mundo[2][2] = 1; // Seguro
                 mundo[1][3] = 1; // Seguro
@@ -138,6 +149,8 @@ public class BaseDeConhecimento {
                 mundo[2][2] = -1; // Não seguro
                 mundo[1][3] = -1; // Não seguro
             }
+
+            // Define a próxima posição com base no estado das casas adjacentes
             if (mundo[2][2] == 1) {
                 posicao[0] = 1;
                 posicao[1] = 2;
@@ -145,27 +158,30 @@ public class BaseDeConhecimento {
                 if (mundo[1][3] == 1) {
                     posicao[0] = 2;
                     posicao[1] = 1;
-                }else{
-					 // Retorne à posição (1,1)
-					 posicao[0] = 1;
-					 posicao[1] = 1;
-				}
+                } else {
+                    // Retorne à posição (1,1)
+                    posicao[0] = 1;
+                    posicao[1] = 1;
+                }
             }
-        }else if ((i == 2) && (j == 1)) {
+        } else if ((i == 2) && (j == 1)) {
+            // Verifica se há brisa e define o estado das casas adjacentes
             if (!brisa) {
                 mundo[3][1] = 1; // Seguro
-                mundo[2][2] = 1; // Seguro (TEM QUE SE LIGAR NISSO ELE FOI EM OUTRA E VERIFICOU QUE ESSE TEM PERIGO 
+                mundo[2][2] = 1; // Seguro
             } else {
                 mundo[2][2] = -1; // Não seguro
                 mundo[1][3] = -1; // Não seguro
             }
+            // Verifica se há fedor e define o estado das casas adjacentes
             if (!fedor) {
                 mundo[3][1] = 1; // Seguro
                 mundo[2][2] = 1; // Seguro
             } else {
-               	mundo[3][1] = -1; // Não seguro
-               	mundo[2][2] = -1; // Não seguro
+                mundo[3][1] = -1; // Não seguro
+                mundo[2][2] = -1; // Não seguro
             }
+            // Define a próxima posição com base no estado das casas adjacentes
             if (mundo[3][1] == 1) {
                 posicao[0] = 3;
                 posicao[1] = 1;
@@ -173,13 +189,13 @@ public class BaseDeConhecimento {
                 if (mundo[2][2] == 1) {
                     posicao[0] = 2;
                     posicao[1] = 2;
-                }else{
-					 // Retorne à posição (1,1)
-					 posicao[0] = 1;
-					 posicao[1] = 1;
-				}
+                } else {
+                    // Retorne à posição (1,1)
+                    posicao[0] = 1;
+                    posicao[1] = 1;
+                }
             }
-		}
+        }
         return posicao;
     }
 
